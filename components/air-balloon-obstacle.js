@@ -10,7 +10,7 @@ AFRAME.registerComponent('air-balloon-obstacle', {
         },
         hitRadius: {
             type: 'number',
-            default: 2.5
+            default: 3.5
         }
     },
     init() {

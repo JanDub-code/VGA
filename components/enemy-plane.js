@@ -14,7 +14,7 @@ AFRAME.registerComponent('enemy-plane', {
         },
         hitRadius: {
             type: 'number',
-            default: 1.4,
+            default: 2.2,
         },
         phase: {
             type: 'number',

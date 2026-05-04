@@ -222,8 +222,12 @@ AFRAME.registerComponent('projectile', {
         this.currentPosition = new THREE.Vector3()
         this.obstaclePosition = new THREE.Vector3()
         this.segment = new THREE.Vector3()
+        this.segmentDirection = new THREE.Vector3()
         this.targetToStart = new THREE.Vector3()
         this.closestPoint = new THREE.Vector3()
+        this.targetBox = new THREE.Box3()
+        this.targetBoxHitPoint = new THREE.Vector3()
+        this.pathRay = new THREE.Ray()
     },
 
     tick(time, delta) {
@@ -248,19 +252,48 @@ AFRAME.registerComponent('projectile', {
                 return
             }
 
-            otherEntity.object3D.getWorldPosition(this.obstaclePosition)
-            let hitRadius = 0.75
-            if (otherEntity.components['enemy-plane']) {
-                hitRadius = otherEntity.components['enemy-plane'].data.hitRadius
-            } else if (otherEntity.components['air-balloon-obstacle']) {
-                hitRadius = otherEntity.components['air-balloon-obstacle'].data.hitRadius
-            }
-
-            if (this.distanceToCurrentPath(this.obstaclePosition) < hitRadius) {
+            if (this.hitsTarget(otherEntity)) {
+                this.createExplosion(this.currentPosition)
                 otherEntity.emit('hit-by-projectile', { damage: this.data.damage })
                 this.el.remove()
             }
         })
+    },
+
+    hitsTarget(otherEntity) {
+        if (otherEntity.hasAttribute('enemy-plane') || otherEntity.hasAttribute('air-balloon-obstacle')) {
+            this.targetBox.setFromObject(otherEntity.object3D).expandByScalar(0.35)
+
+            if (!this.targetBox.isEmpty() && this.currentPathIntersectsBox()) {
+                return true
+            }
+        }
+
+        otherEntity.object3D.getWorldPosition(this.obstaclePosition)
+
+        let hitRadius = 0.75
+        if (otherEntity.components['enemy-plane']) {
+            hitRadius = otherEntity.components['enemy-plane'].data.hitRadius
+        } else if (otherEntity.components['air-balloon-obstacle']) {
+            hitRadius = otherEntity.components['air-balloon-obstacle'].data.hitRadius
+        }
+
+        return this.distanceToCurrentPath(this.obstaclePosition) < hitRadius
+    },
+
+    currentPathIntersectsBox() {
+        this.segment.subVectors(this.currentPosition, this.previousPosition)
+        const segmentLength = this.segment.length()
+
+        if (segmentLength === 0) {
+            return this.targetBox.containsPoint(this.currentPosition)
+        }
+
+        this.segmentDirection.copy(this.segment).normalize()
+        this.pathRay.set(this.previousPosition, this.segmentDirection)
+
+        const hitPoint = this.pathRay.intersectBox(this.targetBox, this.targetBoxHitPoint)
+        return hitPoint && hitPoint.distanceTo(this.previousPosition) <= segmentLength
     },
 
     distanceToCurrentPath(targetPosition) {
@@ -276,5 +309,27 @@ AFRAME.registerComponent('projectile', {
         this.closestPoint.copy(this.previousPosition).addScaledVector(this.segment, t)
 
         return this.closestPoint.distanceTo(targetPosition)
+    },
+
+    createExplosion(position) {
+        const explosion = document.createElement('a-sphere')
+        explosion.setAttribute('position', position)
+        explosion.setAttribute('radius', 0.25)
+        explosion.setAttribute('material', 'color: #ff7a18; emissive: #ff3d00; emissiveIntensity: 4; transparent: true; opacity: 0.9')
+        explosion.setAttribute('animation__scale', {
+            property: 'scale',
+            to: '5 5 5',
+            dur: 450,
+            easing: 'easeOutQuad',
+        })
+        explosion.setAttribute('animation__fade', {
+            property: 'material.opacity',
+            to: 0,
+            dur: 450,
+            easing: 'easeOutQuad',
+        })
+
+        this.el.sceneEl.appendChild(explosion)
+        setTimeout(() => explosion.remove(), 500)
     },
 });

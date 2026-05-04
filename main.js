@@ -35,7 +35,7 @@ document.querySelector('#app').innerHTML = `
   
         <!-- Environment -->
         <!--  sky    --> <a-sky src="#sky"></a-sky>
-        <!-- ground  --> <a-entity gltf-model="#terrain" ammo-body="type: static;" ammo-shape="type: mesh" position="0 -20 -4" scale="5 5 5" shadow="receive: true"></a-entity>
+        <!-- ground  --> <a-entity gltf-model="#terrain" ammo-body="type: static;" ammo-shape="type: mesh" position="0 -20 -4" scale="20 5 20" shadow="receive: true"></a-entity>
         <!--  tree   --> <a-entity class="raycaster-target" ammo-body="type: static;" ammo-shape="type: mesh;" gltf-model="#tree" position="2.9 -10 -7" scale="0.2 0.2 0.2"  shadow="cast: true"></a-entity> 
 
         <!-- Obstacles -->
@@ -52,18 +52,18 @@ document.querySelector('#app').innerHTML = `
         <a-entity class="raycaster-target" gltf-model="#air-ring" air-obstacle="score: 10" position="-6 3 -134" scale="0.05 0.05 0.05"></a-entity>
 
         <!-- Air Balloons -->
-        <a-entity class="raycaster-target" air-balloon-obstacle="strength: 100; score: 15; hitRadius: 2.5" position="13 8 -38">
+        <a-entity class="raycaster-target" air-balloon-obstacle="strength: 100; score: 15; hitRadius: 3.5" position="13 8 -38">
             <a-entity gltf-model="#hot-air-balloon" rotation="270 90 45" scale="0.02 0.02 0.02" shadow="cast: true"></a-entity>
         </a-entity>
-        <a-entity class="raycaster-target" air-balloon-obstacle="strength: 100; score: 15; hitRadius: 2.5" position="-16 11 -78">
+        <a-entity class="raycaster-target" air-balloon-obstacle="strength: 100; score: 15; hitRadius: 3.5" position="-16 11 -78">
             <a-entity gltf-model="#hot-air-balloon" rotation="270 90 45" scale="0.02 0.02 0.02" shadow="cast: true"></a-entity>
         </a-entity>
 
         <!-- Enemies -->
-        <a-entity enemy-plane="phase: 0; speed: 4.4; health: 100; score: 50; hitRadius: 1.4" position="-4 5.5 -10" rotation="0 -12 0">
+        <a-entity enemy-plane="phase: 0; speed: 4.4; health: 100; score: 50; hitRadius: 2.2" position="-4 5.5 -10" rotation="0 -12 0">
             <a-entity gltf-model="#enemy-airplane" position="0 0 0" rotation="0 90 0" scale="0.02 0.02 0.02" shadow="cast: true"></a-entity>
         </a-entity>
-        <a-entity enemy-plane="phase: 3; speed: 4; health: 100; score: 50; hitRadius: 1.4" position="4 6.5 -16" rotation="0 14 0">
+        <a-entity enemy-plane="phase: 3; speed: 4; health: 100; score: 50; hitRadius: 2.2" position="4 6.5 -16" rotation="0 14 0">
             <a-entity gltf-model="#enemy-airplane" position="0 0 0" rotation="0 90 0" scale="0.02 0.02 0.02" shadow="cast: true"></a-entity>
         </a-entity>
         
