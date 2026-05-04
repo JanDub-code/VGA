@@ -1,0 +1,61 @@
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+body, #app {
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;;
+}
+
+#app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game-over {
+  position: fixed;
+  z-index: 2;
+  display: none;
+  background: rgba(255, 0, 0, 0.5);
+  color: white;
+  font-size: 3em;
+  padding: 3em;
+  border-radius: 10%;
+}
+
+#controls-hint {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+#score {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.55);
+  color: #66f7ff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  pointer-events: none;
+}
+
